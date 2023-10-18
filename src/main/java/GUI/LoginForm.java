@@ -34,7 +34,7 @@ public class LoginForm extends JFrame implements ActionListener{
         register.setActionCommand("register");
 
         //Panel
-        panel = new JPanel(new GridLayout(3, 1));
+        panel = new JPanel(new GridLayout(3, 2));
         panel.add(email_label);
         panel.add(EMAIL_FIELD);
         panel.add(pass_label);
@@ -51,18 +51,24 @@ public class LoginForm extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent ae){
-        //login button
+        //Login button
         if(ae.getActionCommand().equals("login")){
             String email = EMAIL_FIELD.getText();
             String pass = PASS_FIELD.getText();
 
             if(email.equals("test") && pass.equals("test")){
-                Home home = new Home();
-                home.setVisible(true);
+                Home newpage = new Home();
+                newpage.setVisible(true);
                 dispose();
             }else{
                 JOptionPane.showMessageDialog(this, "Wrong user/password.");
             }
+        }
+        //Register button
+        if(ae.getActionCommand().equals("register")){
+            Register newpage = new Register();
+            newpage.setVisible(true);
+            dispose();
         }
     }    
 }
