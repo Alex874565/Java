@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface ManageDB {
+public interface ManageUsers {
     default Connection connect(String[] creds){
         try(Connection conn = DriverManager.getConnection(creds[0], creds[1], creds[2])){
             return DriverManager.getConnection(creds[0], creds[1], creds[2]);
@@ -61,6 +61,18 @@ public interface ManageDB {
             }
         }catch(SQLException e){
             throw new IllegalStateException("getName error", e);
+        }
+    }
+
+    default void addUser(String[] CREDS, String name, String email, String pass){
+        try(Connection conn = connect(CREDS)){
+            PreparedStatement query = conn.prepareStatement("INSERT INTO GymWorkoutPlanner.users VALUES (?, ?, ?);");
+            query.setString(1, name);
+            query.setString(2, email);
+            query.setString(3, pass);
+            query.executeUpdate();
+        }catch(SQLException e){
+            throw new IllegalStateException("addUser error", e);
         }
     }
 }

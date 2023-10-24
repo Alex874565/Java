@@ -3,11 +3,11 @@
 ### Gym Workout Planner
 
 ## Descriere
-Aceasta aplicatie ajuta utilizatorilor sa isi structreze antrenamentele, permitand stocarea informatiilor despre tipurile de exercitii facute, timpul alocat acestora si echipamentul folosit.
+Aceasta aplicatie ajuta utilizatorii sa isi structreze antrenamentele, permitand stocarea informatiilor despre tipurile de exercitii facute, timpul alocat acestora si echipamentul folosit.
 
 ## Obiective
-* Creearea unui orar de antrenamente
-* Vizualizarea progresului
+* Creearea unui plan de antrenamente
+* Cuantificarea progresului
 
 ## Arhitectura
 Lorem ipsum ...

@@ -6,8 +6,9 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import Database.ManageUsers;
 
-public class Register extends JFrame implements ActionListener{
+public class Register extends JFrame implements ActionListener, ManageUsers{
     JLabel name_label, email_label, password_label, confirm_password_label;
     JButton register, back;
     JPanel panel;
@@ -15,7 +16,8 @@ public class Register extends JFrame implements ActionListener{
     final JPasswordField PASS_FIELD, CONFIRM_PASS_FIELD;
     static final String URL = "jdbc:mysql://localhost:3306/GymWorkoutPlanner",
                         DB_USER = "gymworkoutplanner",
-                        DB_PASS = "GymWorkoutPlanner1.";
+                        DB_PASS = "GymWorkoutPlanner1.",
+                        CREDS[] = {URL, DB_USER, DB_PASS};
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -93,8 +95,6 @@ public class Register extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae){
         if(ae.getActionCommand().equals("register")){
-
-            System.out.println("Connecting database...");
             
             String name = NAME_FIELD.getText();
             String email = EMAIL_FIELD.getText();
@@ -108,24 +108,15 @@ public class Register extends JFrame implements ActionListener{
             }else if(!validate(email)){
                 JOptionPane.showMessageDialog(this, "Please insert a valid email. >:(");
             }else{
-                try (Connection conn = DriverManager.getConnection(URL, DB_USER, DB_PASS)) {
-                    System.out.println("Database connected!");
-                    PreparedStatement query = conn.prepareStatement("SELECT COUNT(*) FROM GymWorkoutPlanner.users WHERE email = ?");
-                    query.setString(1, email);
-                    ResultSet rs = query.executeQuery();
-                    rs.next();
-                    if(rs.getInt(1) != 0){
+                try (Connection conn = connect(CREDS)) {
+                    if(emailExists(CREDS, email)){
                         JOptionPane.showMessageDialog(this, "Email already in use.");
                     }else{
-                        query = conn.prepareStatement("INSERT INTO GymWorkoutPlanner.users VALUES (?, ?, ?);");
-                        query.setString(1, name);
-                        query.setString(2, email);
-                        query.setString(3, pass);
-                        query.executeUpdate();
+                        addUser(CREDS, name, email, pass);
                         LoginForm newpage = new LoginForm();
                         newpage.setVisible(true);
                         dispose();
-                    } 
+                    }
                 } catch (SQLException e) {
                     throw new IllegalStateException("Cannot connect the database!", e);
                 }

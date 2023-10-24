@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;  
 import Database.*;
 
-public class LoginForm extends JFrame implements ActionListener, ManageDB{
+public class LoginForm extends JFrame implements ActionListener, ManageUsers{
     JButton login;
     JButton register;
     JPanel panel;
@@ -62,7 +62,7 @@ public class LoginForm extends JFrame implements ActionListener, ManageDB{
         panel.add(wrapper_pass);
         panel.add(wrapper_buttons);
 
-        //Panel Border
+        //Panel
         add(panel);
         login.addActionListener(this);
         register.addActionListener(this);
