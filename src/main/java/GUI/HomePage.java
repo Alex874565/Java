@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.*;
+import main.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +11,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class Home extends JFrame implements ActionListener, ManageWorkouts, ManageUsers{
+public class HomePage extends JFrame implements ActionListener, ManageWorkouts, ManageUsers{
 
-    static final String URL = "jdbc:mysql://localhost:3306/GymWorkoutPlanner",
-                        DB_USER = "gymworkoutplanner",
-                        DB_PASS = "GymWorkoutPlanner1.",
-                        CREDS[] = {URL, DB_USER, DB_PASS};
     final String EMAIL;
 
     @Override
@@ -28,14 +25,14 @@ public class Home extends JFrame implements ActionListener, ManageWorkouts, Mana
     }
 
 
-    Home(String email){
+    public HomePage(String email){
         this.EMAIL = email;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600,600);
         setTitle("Home");
 
-        String name = getName(CREDS, EMAIL);
+        String name = getName(Main.CREDS, EMAIL);
 
         JPanel panel = new JPanel(new GridLayout(2,2));
 
@@ -58,7 +55,7 @@ public class Home extends JFrame implements ActionListener, ManageWorkouts, Mana
         add(scroll_pane);
     }
 
-    Home(){
+    public HomePage(){
         this("tester");
     }
 
@@ -67,7 +64,7 @@ public class Home extends JFrame implements ActionListener, ManageWorkouts, Mana
         if(ae.getActionCommand().equals("add_workout")){
             String wname = (String)JOptionPane.showInputDialog(this, "Insert workout name:");
             if(wname != null && wname.length() > 0){
-                addWorkout(CREDS, EMAIL, wname);
+                addWorkout(Main.CREDS, EMAIL, wname);
             }
         }
     }

@@ -4,21 +4,18 @@ import javax.swing.*;
 import java.awt.*;  
 import java.awt.event.*;  
 import Database.*;
+import main.*;
 
-public class LoginForm extends JFrame implements ActionListener, ManageUsers{
-    JButton login;
-    JButton register;
-    JPanel panel;
-    JLabel email_label;
-    JLabel pass_label;
+public class LoginPage extends JFrame implements ActionListener, ManageUsers, AddGUIElements{
     final JTextField EMAIL_FIELD;
     final JPasswordField PASS_FIELD;
-    static final String URL = "jdbc:mysql://localhost:3306/GymWorkoutPlanner",
-                        DB_USER = "gymworkoutplanner",
-                        DB_PASS = "GymWorkoutPlanner1.",
-                        CREDS[] = {URL, DB_USER, DB_PASS};
 
-    LoginForm(){
+    public LoginPage(){
+        JButton login;
+        JButton register;
+        JPanel panel;
+        JLabel email_label;
+        JLabel pass_label;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600,600);
@@ -38,35 +35,24 @@ public class LoginForm extends JFrame implements ActionListener, ManageUsers{
         //Login Button
         login = new JButton("Login");
         login.setActionCommand("login");
+        login.addActionListener(this);
     
         //Register Button
         register = new JButton("Register");
         register.setActionCommand("register");
-
-        //Panel
-        JPanel wrapper_email = new JPanel(new FlowLayout());
-        wrapper_email.add(email_label);
-        wrapper_email.add(EMAIL_FIELD);
-
-        JPanel wrapper_pass = new JPanel(new FlowLayout());
-        wrapper_pass.add(pass_label);
-        wrapper_pass.add(PASS_FIELD);
-
-        JPanel wrapper_buttons = new JPanel(new FlowLayout());
-        wrapper_buttons.add(login);
-        wrapper_buttons.add(register);
-
-        panel = new JPanel(new GridLayout(4,1));
-        panel.add(new JPanel());
-        panel.add(wrapper_email);
-        panel.add(wrapper_pass);
-        panel.add(wrapper_buttons);
-
-        //Panel
-        add(panel);
-        login.addActionListener(this);
         register.addActionListener(this);
-        setTitle("Login Form");
+
+        JButton[] buttons = {login, register};
+
+        //Panel
+        panel = new JPanel(new GridLayout(4,1));
+
+        panel.add(new JPanel());
+
+        addLabelText(panel, email_label, EMAIL_FIELD);
+        addLabelPass(panel, pass_label, PASS_FIELD);
+        addButtons(panel, buttons);
+        add(panel);
     }
 
     @Override
@@ -80,8 +66,8 @@ public class LoginForm extends JFrame implements ActionListener, ManageUsers{
 
             if(email.equals("") || pass.equals("")){
                 JOptionPane.showMessageDialog(this, "Please complete all fields.");
-            }else if(userExists(CREDS, email, pass)){
-                Home newpage = new Home(getName(CREDS, email));
+            }else if(userExists(Main.CREDS, email, pass)){
+                HomePage newpage = new HomePage(email);
                 newpage.setVisible(true);
                 dispose();   
             }else{
@@ -90,7 +76,7 @@ public class LoginForm extends JFrame implements ActionListener, ManageUsers{
         }
         //Register button
         if(ae.getActionCommand().equals("register")){
-            Register newpage = new Register();
+            RegistrationPage newpage = new RegistrationPage();
             newpage.setVisible(true);
             dispose();
         }
